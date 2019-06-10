@@ -19,6 +19,6 @@
                 android:text="TextViewInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/infoTextViewID" android:textSize="14sp"
-                android:gravity="right"/>
+                android:gravity="end"/>
     </LinearLayout>
 </LinearLayout>

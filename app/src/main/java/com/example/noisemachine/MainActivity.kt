@@ -2,38 +2,30 @@ package com.example.noisemachine
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ListView
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var listView : ListView
+    val nameArray = arrayOf<String>("Accelerometer", "Microphone")
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    val infoArray = arrayOf<String>("this is where the accelerometer readout goes", "this is where the mic readout goes")
+
+    val imageArray = arrayOf<Int>(R.drawable.accel_icon, R.drawable.mic_icon)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        listView = findViewById(R.id.data_list_view)
+        val adapter = CustomListAdapter(this, nameArray, infoArray, imageArray)
 
-        val nameArray = arrayOf("Octopus", "Pig")
+        data_list_view.adapter = adapter
 
-        val infoArray = arrayOf("8 tentacled monster", "Delicious in rolls")
-
-        val imageArray = arrayOf(R.drawable.accel_icon, R.drawable.mic_icon)
-
-        /*
-        //this is the basic adapter
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems)
-        listView.adapter = adapter
-        //custom adapter
-        */
-        val adapter = CustomListAdapter(this, nameArray, infoArray , imageArray)
-        listView.adapter = adapter
-
+        data_list_view.setOnItemClickListener { adapterView, view, position, id ->
+            val itemAtPos = adapterView.getItemAtPosition(position)
+            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+            Toast.makeText(this, "Click on item at $itemAtPos : item id $itemIdAtPos", Toast.LENGTH_LONG).show()
         }
-
-
+    }
 }

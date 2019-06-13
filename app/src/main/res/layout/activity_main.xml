@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
     <ListView
-            android:layout_width="395dp"
-            android:layout_height="715dp" tools:layout_editor_absoluteY="8dp" tools:layout_editor_absoluteX="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/data_list_view"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

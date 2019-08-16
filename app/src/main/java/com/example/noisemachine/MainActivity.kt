@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() , SensorEventListener {
         //get resources
         val nameArray = resources.getStringArray(R.array.hw_names)
         val infoArray = resources.getStringArray(R.array.hw_values)
-        val imageArray = arrayOf<Int>(R.drawable.accel_icon, R.drawable.mic_icon)
+        val imageArray = arrayOf<Int>(R.drawable.accel_icon, R.drawable.accel_icon, R.drawable.accel_icon)
 
         // get reference of the service
         mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         // focus in accelerometer
         mAccelerometer = mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         // setup the window
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         //define custom adapter
         val adapter = CustomListAdapter(this, nameArray, infoArray, imageArray)

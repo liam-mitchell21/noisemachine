@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">Noise Machine</string>
+    <string name="switchon">Sound!</string>
+    <string name="switchoff">Silence.</string>
     <string-array name="hw_names">
         <item>Accelerometer X</item>
         <item>Accelerometer Y</item>
         <item>Accelerometer Z</item>
-        <item>Compass</item>
+        <item>Compass X</item>
+        <item>Compass Y</item>
+        <item>Compass Z</item>
     </string-array>
     <string-array name="hw_values">
+        <item>0.0000</item>
+        <item>0.0000</item>
         <item>0.0000</item>
         <item>0.0000</item>
         <item>0.0000</item>

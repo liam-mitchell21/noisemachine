@@ -4,8 +4,10 @@
         <item>Accelerometer X</item>
         <item>Accelerometer Y</item>
         <item>Accelerometer Z</item>
+        <item>Compass</item>
     </string-array>
     <string-array name="hw_values">
+        <item>0.0000</item>
         <item>0.0000</item>
         <item>0.0000</item>
         <item>0.0000</item>

@@ -17,30 +17,38 @@ class MainActivity : AppCompatActivity() , SensorEventListener {
 
     private var mSensorManager: SensorManager? = null
     private var mAccelerometer: Sensor? = null
+    private var mCompass: Sensor? = null
+
+    //get resources
+    private var nameArray: Array<String>? = null //resources.getStringArray(R.array.hw_names)
+    private var infoArray: Array<String>? = null //resources.getStringArray(R.array.hw_values)
+    private var imageArray: Array<Int>? = null //arrayOf<Int>(R.drawable.accel_icon, R.drawable.accel_icon, R.drawable.accel_icon, R.drawable.compass_icon)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //get resources
-        val nameArray = resources.getStringArray(R.array.hw_names)
-        val infoArray = resources.getStringArray(R.array.hw_values)
-        val imageArray = arrayOf<Int>(R.drawable.accel_icon, R.drawable.accel_icon, R.drawable.accel_icon)
-
         // get reference of the service
         mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        // focus in accelerometer
+
+        //SENSORS INIT
         mAccelerometer = mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        mCompass = mSensorManager!!.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
         // setup the window
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        //define custom adapter
-        val adapter = CustomListAdapter(this, nameArray, infoArray, imageArray)
+        //define custom adapter and init data
+        nameArray = resources.getStringArray(R.array.hw_names)
+        infoArray = resources.getStringArray(R.array.hw_values)
+        imageArray = arrayOf<Int>(R.drawable.accel_icon, R.drawable.accel_icon, R.drawable.accel_icon, R.drawable.compass_icon)
+
+        val adapter = CustomListAdapter(this, nameArray as Array<String>, infoArray as Array<String>, imageArray!!)
 
         //apply custom adapter
         data_list_view.adapter = adapter
 
-        //on-click functionality
+        //on-click functionality, NONFUNCTIONAL: updating too quick
         data_list_view.setOnItemClickListener { adapterView, view, position, id ->
             val itemAtPos = adapterView.getItemAtPosition(position)
             val itemIdAtPos = adapterView.getItemIdAtPosition(position)
@@ -54,25 +62,44 @@ class MainActivity : AppCompatActivity() , SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
+            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                val accelval1: String? = infoArray?.get(0)
+                val accelval2: String? = infoArray?.get(1)
+                val accelval3: String? = infoArray?.get(2)
+                val magval: String = event.values.toString()
 
-            val accelval1: String = event.values[0].toString()
-            val accelval2: String = event.values[1].toString()
-            val accelval3: String = event.values[2].toString()
+                // update values
+                val infoArray = arrayOf<String>(accelval1!!, accelval2!!, accelval3!!, magval)
 
-            val nameArray = resources.getStringArray(R.array.hw_names)
-            val infoArray = arrayOf<String>( accelval1, accelval2, accelval3 )
-            val imageArray = arrayOf<Int>(R.drawable.accel_icon, R.drawable.accel_icon, R.drawable.accel_icon)
+                //update adapter
+                val adapter = CustomListAdapter(this, nameArray, infoArray, imageArray)
 
-            val adapter = CustomListAdapter(this, nameArray, infoArray, imageArray)
+                //apply custom adapter
+                data_list_view.adapter = adapter
+            }
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                val accelval1: String = event.values[0].toString()
+                val accelval2: String = event.values[1].toString()
+                val accelval3: String = event.values[2].toString()
+                val magval: String? = infoArray?.get(3)
 
-            //apply custom adapter
-            data_list_view.adapter = adapter
+                // update values
+                val infoArray = arrayOf<String>(accelval1, accelval2, accelval3, magval!!)
+
+                //update adapter
+                val adapter = CustomListAdapter(this, nameArray, infoArray, imageArray)
+
+                //apply custom adapter
+                data_list_view.adapter = adapter
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
         mSensorManager!!.registerListener(this,mAccelerometer,
+            SensorManager.SENSOR_DELAY_GAME)
+        mSensorManager!!.registerListener(this,mCompass,
             SensorManager.SENSOR_DELAY_GAME)
     }
 
